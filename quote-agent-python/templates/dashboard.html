@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px;
+            box-shadow: var(--box-shadow);
+            position: relative;
+            z-index: 10;
+        }
+        
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        header h1 i {
+            margin-right: 10px;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 25px;
+            transition: var(--transition);
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card h2 {
+            margin-top: 0;
+            color: var(--secondary-color);
+            border-bottom: 2px solid var(--light-color);
+            padding-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card h2 i {
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        table th {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        table tr:hover {
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .stat-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .stat-card:nth-child(2) {
+            border-left-color: var(--success-color);
+        }
+        
+        .stat-card:nth-child(3) {
+            border-left-color: var(--warning-color);
+        }
+        
+        .stat-card:nth-child(4) {
+            border-left-color: var(--danger-color);
+        }
+        
+        .stat-card:nth-child(5) {
+            border-left-color: var(--secondary-color);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-card h3 {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+            font-weight: normal;
+        }
+        
+        .stat-card p {
+            margin: 15px 0 0;
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--dark-color);
+        }
+        
+        .stat-card i {
+            display: block;
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .status-completed {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: #27ae60;
+        }
+        
+        .status-in-progress {
+            background-color: rgba(243, 156, 18, 0.2);
+            color: #f39c12;
+        }
+        
+        .status-failed {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+        }
+        
+        .refresh-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 14px;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+        
+        .refresh-btn i {
+            margin-right: 8px;
+        }
+        
+        .refresh-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+        }
+        
+        .tab.active {
+            border-bottom-color: var(--primary-color);
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            font-style: italic;
+            color: #777;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><i class="fas fa-chart-line"></i> Quote Agent IMS Dashboard</h1>
+    </header>
+    
+    <div class="container">
+        <div class="tabs">
+            <div class="tab active" data-tab="overview">Overview</div>
+            <div class="tab" data-tab="calls">Calls</div>
+            <div class="tab" data-tab="quotes">Quotes</div>
+            <div class="tab" data-tab="orders">Orders</div>
+        </div>
+        
+        <!-- Overview Tab Content -->
+        <div id="overview" class="tab-content active">
+            <div class="dashboard-grid">
+                <div class="card">
+                    <h2><i class="fas fa-chart-pie"></i> System Statistics</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <i class="fas fa-phone"></i>
+                            <h3>Total Calls</h3>
+                            <p id="total-calls">--</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-check-circle"></i>
+                            <h3>Completed Calls</h3>
+                            <p id="completed-calls">--</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            <h3>Total Quotes</h3>
+                            <p id="total-quotes">--</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-dollar-sign"></i>
+                            <h3>Avg. Price</h3>
+                            <p id="avg-price">--</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-clock"></i>
+                            <h3>Avg. ETA (days)</h3>
+                            <p id="avg-eta">--</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2><i class="fas fa-phone-alt"></i> Recent Calls</h2>
+                    <table id="recent-calls-table">
+                        <thead>
+                            <tr>
+                                <th>Caller</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                                <th>Parts</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="4" class="loading">Loading calls data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="card">
+                    <h2><i class="fas fa-file-invoice-dollar"></i> Recent Quotes</h2>
+                    <table id="recent-quotes-table">
+                        <thead>
+                            <tr>
+                                <th>Manufacturer</th>
+                                <th>Parts</th>
+                                <th>Price</th>
+                                <th>ETA</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="4" class="loading">Loading quotes data...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Calls Tab Content -->
+        <div id="calls" class="tab-content">
+            <div class="card">
+                <h2><i class="fas fa-phone-alt"></i> All Calls</h2>
+                <table id="calls-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Caller</th>
+                            <th>Direction</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                            <th>Parts</th>
+                            <th>Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="7" class="loading">Loading calls data...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Quotes Tab Content -->
+        <div id="quotes" class="tab-content">
+            <div class="card">
+                <h2><i class="fas fa-file-invoice-dollar"></i> All Quotes</h2>
+                <table id="quotes-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Manufacturer</th>
+                            <th>Parts</th>
+                            <th>Price</th>
+                            <th>ETA</th>
+                            <th>Best Quote</th>
+                            <th>Created</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="7" class="loading">Loading quotes data...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Orders Tab Content -->
+        <div id="orders" class="tab-content">
+            <div class="card">
+                <h2><i class="fas fa-shopping-cart"></i> All Orders</h2>
+                <table id="orders-table">
+                    <thead>
+                        <tr>
+                            <th>Order #</th>
+                            <th>Customer</th>
+                            <th>Parts</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="6" class="loading">Loading orders data...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <button id="refresh-btn" class="refresh-btn">
+            <i class="fas fa-sync-alt"></i> Refresh Data
+        </button>
+    </div>
+    
+    <script>
+        // Tab switching functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and tab contents
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding content
+                tab.classList.add('active');
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // Format date function
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return date.toLocaleString();
+        }
+        
+        // Create status badge
+        function createStatusBadge(status) {
+            const badge = document.createElement('span');
+            badge.classList.add('status-badge');
+            
+            if (status === 'completed') {
+                badge.classList.add('status-completed');
+                badge.textContent = 'Completed';
+            } else if (status === 'in-progress') {
+                badge.classList.add('status-in-progress');
+                badge.textContent = 'In Progress';
+            } else if (status === 'failed') {
+                badge.classList.add('status-failed');
+                badge.textContent = 'Failed';
+            } else {
+                badge.textContent = status || 'Unknown';
+            }
+            
+            return badge;
+        }
+        
+        // Fetch dashboard data
+        async function fetchDashboardData() {
+            try {
+                // Fetch stats
+                const statsResponse = await fetch('/dashboard/stats');
+                const stats = await statsResponse.json();
+                
+                document.getElementById('total-calls').textContent = stats.total_calls;
+                document.getElementById('completed-calls').textContent = stats.completed_calls;
+                document.getElementById('total-quotes').textContent = stats.total_quotes;
+                document.getElementById('avg-price').textContent = `$${stats.average_quote_price.toFixed(2)}`;
+                document.getElementById('avg-eta').textContent = stats.average_eta.toFixed(1);
+                
+                // Fetch calls for overview
+                const callsResponse = await fetch('/dashboard/calls');
+                const calls = await callsResponse.json();
+                
+                // Recent calls table (overview)
+                const recentCallsTableBody = document.querySelector('#recent-calls-table tbody');
+                recentCallsTableBody.innerHTML = '';
+                
+                if (calls.length === 0) {
+                    const row = document.createElement('tr');
+                    const cell = document.createElement('td');
+                    cell.colSpan = 4;
+                    cell.textContent = 'No calls found';
+                    row.appendChild(cell);
+                    recentCallsTableBody.appendChild(row);
+                } else {
+                    // Show only 5 most recent calls in overview
+                    const recentCalls = calls.slice(0, 5);
+                    
+                    recentCalls.forEach(call => {
+                        const row = document.createElement('tr');
+                        
+                        const callerCell = document.createElement('td');
+                        callerCell.textContent = call.customer ? call.customer.phone : 'Unknown';
+                        
+                        const timeCell = document.createElement('td');
+                        timeCell.textContent = formatDate(call.created_at);
+                        
+                        const statusCell = document.createElement('td');
+                        statusCell.appendChild(createStatusBadge(call.status));
+                        
+                        const partsCell = document.createElement('td');
+                        partsCell.textContent = call.parts.map(part => part.name).join(', ') || 'None';
+                        
+                        row.appendChild(callerCell);
+                        row.appendChild(timeCell);
+                        row.appendChild(statusCell);
+                        row.appendChild(partsCell);
+                        
+                        recentCallsTableBody.appendChild(row);
+                    });
+                }
+                
+                // All calls table
+                const callsTableBody = document.querySelector('#calls-table tbody');
+                callsTableBody.innerHTML = '';
+                
+                if (calls.length === 0) {
+                    const row = document.createElement('tr');
+                    const cell = document.createElement('td');
+                    cell.colSpan = 7;
+                    cell.textContent = 'No calls found';
+                    row.appendChild(cell);
+                    callsTableBody.appendChild(row);
+                } else {
+                    calls.forEach(call => {
+                        const row = document.createElement('tr');
+                        
+                        const idCell = document.createElement('td');
+                        idCell.textContent = call.id;
+                        
+                        const callerCell = document.createElement('td');
+                        callerCell.textContent = call.customer ? call.customer.phone : 'Unknown';
+                        
+                        const directionCell = document.createElement('td');
+                        directionCell.textContent = call.direction || 'Unknown';
+                        
+                        const timeCell = document.createElement('td');
+                        timeCell.textContent = formatDate(call.created_at);
+                        
+                        const statusCell = document.createElement('td');
+                        statusCell.appendChild(createStatusBadge(call.status));
+                        
+                        const partsCell = document.createElement('td');
+                        partsCell.textContent = call.parts.map(part => part.name).join(', ') || 'None';
+                        
+                        const durationCell = document.createElement('td');
+                        durationCell.textContent = call.duration ? `${call.duration}s` : 'N/A';
+                        
+                        row.appendChild(idCell);
+                        row.appendChild(callerCell);
+                        row.appendChild(directionCell);
+                        row.appendChild(timeCell);
+                        row.appendChild(statusCell);
+                        row.appendChild(partsCell);
+                        row.appendChild(durationCell);
+                        
+                        callsTableBody.appendChild(row);
+                    });
+                }
+                
+                // Fetch quotes
+                const quotesResponse = await fetch('/dashboard/quotes');
+                const quotes = await quotesResponse.json();
+                
+                // Recent quotes table (overview)
+                const recentQuotesTableBody = document.querySelector('#recent-quotes-table tbody');
+                recentQuotesTableBody.innerHTML = '';
+                
+                if (quotes.length === 0) {
+                    const row = document.createElement('tr');
+                    const cell = document.createElement('td');
+                    cell.colSpan = 4;
+                    cell.textContent = 'No quotes found';
+                    row.appendChild(cell);
+                    recentQuotesTableBody.appendChild(row);
+                } else {
+                    // Show only 5 most recent quotes in overview
+                    const recentQuotes = quotes.slice(0, 5);
+                    
+                    recentQuotes.forEach(quote => {
+                        const row = document.createElement('tr');
+                        
+                        const manufacturerCell = document.createElement('td');
+                        manufacturerCell.textContent = quote.manufacturer;
+                        
+                        const partsCell = document.createElement('td');
+                        partsCell.textContent = quote.parts.join(', ');
+                        
+                        const priceCell = document.createElement('td');
+                        priceCell.textContent = `$${quote.price.toFixed(2)}`;
+                        
+                        const etaCell = document.createElement('td');
+                        etaCell.textContent = `${quote.eta} days`;
+                        
+                        row.appendChild(manufacturerCell);
+                        row.appendChild(partsCell);
+                        row.appendChild(priceCell);
+                        row.appendChild(etaCell);
+                        
+                        recentQuotesTableBody.appendChild(row);
+                    });
+                }
+                
+                // All quotes table
+                const quotesTableBody = document.querySelector('#quotes-table tbody');
+                quotesTableBody.innerHTML = '';
+                
+                if (quotes.length === 0) {
+                    const row = document.createElement('tr');
+                    const cell = document.createElement('td');
+                    cell.colSpan = 7;
+                    cell.textContent = 'No quotes found';
+                    row.appendChild(cell);
+                    quotesTableBody.appendChild(row);
+                } else {
+                    quotes.forEach(quote => {
+                        const row = document.createElement('tr');
+                        
+                        const idCell = document.createElement('td');
+                        idCell.textContent = quote.id;
+                        
+                        const manufacturerCell = document.createElement('td');
+                        manufacturerCell.textContent = quote.manufacturer;
+                        
+                        const partsCell = document.createElement('td');
+                        partsCell.textContent = quote.parts.join(', ');
+                        
+                        const priceCell = document.createElement('td');
+                        priceCell.textContent = `$${quote.price.toFixed(2)}`;
+                        
+                        const etaCell = document.createElement('td');
+                        etaCell.textContent = `${quote.eta} days`;
+                        
+                        const bestQuoteCell = document.createElement('td');
+                        if (quote.is_best_quote) {
+                            const badge = document.createElement('span');
+                            badge.classList.add('status-badge', 'status-completed');
+                            badge.textContent = 'Best Quote';
+                            bestQuoteCell.appendChild(badge);
+                        } else {
+                            bestQuoteCell.textContent = 'No';
+                        }
+                        
+                        const createdCell = document.createElement('td');
+                        createdCell.textContent = formatDate(quote.created_at);
+                        
+                        row.appendChild(idCell);
+                        row.appendChild(manufacturerCell);
+                        row.appendChild(partsCell);
+                        row.appendChild(priceCell);
+                        row.appendChild(etaCell);
+                        row.appendChild(bestQuoteCell);
+                        row.appendChild(createdCell);
+                        
+                        quotesTableBody.appendChild(row);
+                    });
+                }
+                
+                // Fetch orders
+                try {
+                    const ordersResponse = await fetch('/dashboard/orders');
+                    const orders = await ordersResponse.json();
+                    
+                    const ordersTableBody = document.querySelector('#orders-table tbody');
+                    ordersTableBody.innerHTML = '';
+                    
+                    if (orders.length === 0) {
+                        const row = document.createElement('tr');
+                        const cell = document.createElement('td');
+                        cell.colSpan = 6;
+                        cell.textContent = 'No orders found';
+                        row.appendChild(cell);
+                        ordersTableBody.appendChild(row);
+                    } else {
+                        orders.forEach(order => {
+                            const row = document.createElement('tr');
+                            
+                            const orderNumberCell = document.createElement('td');
+                            orderNumberCell.textContent = order.order_number;
+                            
+                            const customerCell = document.createElement('td');
+                            customerCell.textContent = order.customer ? `${order.customer.name || ''} (${order.customer.phone})` : 'Unknown';
+                            
+                            const partsCell = document.createElement('td');
+                            partsCell.textContent = order.parts.join(', ');
+                            
+                            const priceCell = document.createElement('td');
+                            priceCell.textContent = `$${order.price.toFixed(2)}`;
+                            
+                            const statusCell = document.createElement('td');
+                            statusCell.appendChild(createStatusBadge(order.status));
+                            
+                            const createdCell = document.createElement('td');
+                            createdCell.textContent = formatDate(order.created_at);
+                            
+                            row.appendChild(orderNumberCell);
+                            row.appendChild(customerCell);
+                            row.appendChild(partsCell);
+                            row.appendChild(priceCell);
+                            row.appendChild(statusCell);
+                            row.appendChild(createdCell);
+                            
+                            ordersTableBody.appendChild(row);
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error fetching orders data:', error);
+                    const ordersTableBody = document.querySelector('#orders-table tbody');
+                    ordersTableBody.innerHTML = '<tr><td colspan="6">Error loading orders data</td></tr>';
+                }
+                
+            } catch (error) {
+                console.error('Error fetching dashboard data:', error);
+            }
+        }
+        
+        // Fetch data on page load
+        document.addEventListener('DOMContentLoaded', fetchDashboardData);
+        
+        // Refresh button functionality
+        document.getElementById('refresh-btn').addEventListener('click', () => {
+            fetchDashboardData();
+        });
+        
+        // Auto refresh data every 60 seconds
+        setInterval(fetchDashboardData, 60000);
+    </script>
+</body>
+</html>
